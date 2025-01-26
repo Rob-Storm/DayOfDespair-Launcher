@@ -18,14 +18,17 @@ namespace DoDLauncher.ViewModel
 
             GetLatestReleaseNotes();
 
-            if(File.Exists("instances.json"))
+            if (File.Exists("instances.json"))
             {
                 LoadInstanceJson();
             }
 
             GameInstances.CollectionChanged += GameInstances_CollectionChanged;
-        }
 
+            ShowNoInstanceWarning();
+
+            ShowInstanceValidationMessages();
+        }
         private void GameInstances_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             WriteInstanceJson();
@@ -198,6 +201,75 @@ namespace DoDLauncher.ViewModel
             string jsonContents = File.ReadAllText("instances.json");
 
             GameInstances = JsonConvert.DeserializeObject<ObservableCollection<GameInstance>>(jsonContents);
+        }
+
+        public async void ShowNoInstanceWarning()
+        {
+            await Task.Delay(100);
+
+            if (!File.Exists("instances.json") || GameInstances == null || GameInstances.Count <= 0)
+            {
+                MessageBox.Show("No instances have been detected by the launcher.\n\nIn order to play Day of Despair, you will need to create an instance either by right clicking the list or using the 'Create New Instance' button.",
+                    "No instances found", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        public InstanceChanges ValidateInstances()
+        {
+            bool removedInstances = false;
+            bool changedInstalledState = false;
+
+            List<GameInstance> removeInstances = new List<GameInstance>();
+
+            foreach(var instance in GameInstances)
+            {
+                if(Path.Exists($@"Instances/{instance.Name}"))
+                {
+                    if (!Path.Exists(instance.ExecutablePath))
+                    {
+                        instance.Installed = false;
+                        changedInstalledState = true;
+                    }
+                }
+                else
+                {
+                    removeInstances.Add(instance);
+                    removedInstances = true;
+                }
+            }
+
+            if(removeInstances.Count > 0)
+            {
+                foreach (GameInstance instance in removeInstances)
+                {
+                    GameInstances.Remove(instance);
+                }
+            }
+
+            return new InstanceChanges { Removed = removedInstances, Changed = changedInstalledState};
+        }
+
+        public async void ShowInstanceValidationMessages()
+        {
+            InstanceChanges changes = ValidateInstances();
+            if (changes.Removed)
+            {
+                await Task.Delay(100);
+                MessageBox.Show("One or more instances have been removed due to missing instance folders.", "Instance Info", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            if (changes.Changed)
+            {
+                await Task.Delay(100);
+                MessageBox.Show("Could not find installation path for one or more instances.\n\nYou must redownload to play the affected instances",
+                    "Instance Info", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+        }
+
+
+        public struct InstanceChanges
+        {
+            public bool Removed;
+            public bool Changed;
         }
 
         #endregion

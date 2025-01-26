@@ -15,6 +15,30 @@ namespace DoDLauncher.ViewModel
 			set { _downloadProgress = value; OnPropertyChanged(); }
 		}
 
+		private long _downloadedBytes;
+
+		public long DownloadedBytes
+		{
+			get { return _downloadedBytes; }
+			set { _downloadedBytes = value; }
+		}
+
+		private long _totalBytes;
+
+		public long TotalBytes
+		{
+			get { return _totalBytes; }
+			set { _totalBytes = value; }
+		}
+
+		private double _downloadSpeed;
+
+		public double DownloadSpeed
+		{
+			get { return _downloadSpeed; }
+			set { _downloadSpeed = value; }
+		}
+
 		private double _extractProgress;
 
 		public double ExtractProgress
@@ -22,8 +46,6 @@ namespace DoDLauncher.ViewModel
 			get { return _extractProgress; }
 			set { _extractProgress = value; OnPropertyChanged(); }
 		}
-
-
 
 		private GameInstance _instance;
 		public GameInstance Instance
@@ -34,12 +56,28 @@ namespace DoDLauncher.ViewModel
 
 		public async Task StartDownload()
 		{
-			Progress<double> downloadProgress = new Progress<double>(p => DownloadProgress = p);
-			Progress<double> extractProgress = new Progress<double>(p => ExtractProgress = p);
+            var downloadProgress = new Progress<(double percentage, long downloadedBytes, long totalBytes, double downloadSpeed)>(progress =>
+            {
+                DownloadProgress = progress.percentage;
+                DownloadedBytes = progress.downloadedBytes;
+                TotalBytes = progress.totalBytes;
+                DownloadSpeed = progress.downloadSpeed / 1024 / 1024; // Convert to MB/s
+            });
 
-            Instance.ExecutablePath = await GitHubActions.DownloadRelease("Rob-Storm", "DayOfDespair-Public", Instance.Version, Instance.Name, downloadProgress, extractProgress);
-			OnFinishInstall?.Invoke();
-		}
+            var extractProgress = new Progress<double>(progress =>
+            {
+                ExtractProgress = progress;
+            });
+
+            Instance.ExecutablePath = await GitHubActions.DownloadRelease(
+                "Rob-Storm",
+                "DayOfDespair-Public",
+                Instance.Version,
+                Instance.Name,
+                downloadProgress,
+                extractProgress
+            );
+        }
 
 	}
 }

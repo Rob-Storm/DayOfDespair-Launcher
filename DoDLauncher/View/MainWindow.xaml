@@ -17,10 +17,10 @@
         <Border Background="#FF2D2D30" BorderThickness="1"/>
 
         <Grid Grid.Column="0" Margin="10">
-
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
                 <RowDefinition Height="*"/>
+                <RowDefinition Height="25"/>
             </Grid.RowDefinitions>
 
             <!-- Instances Section-->
@@ -49,6 +49,10 @@
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </ListBox>
+
+            <Button Grid.Row="2" Content="Create New Instance" FontSize="16" 
+                    FontFamily="Courier New" Command="{Binding CreateInstanceCommand}"/>
+
         </Grid>
 
         <Grid Grid.Column="1">

@@ -11,8 +11,22 @@
         <StackPanel Orientation="Vertical" MaxWidth="550">
             <TextBlock Text="Downloading..." FontSize="36" HorizontalAlignment="Center" 
                        Foreground="White" FontFamily="Courier New" Margin="0,50,0,0"/>
-            <ProgressBar Name="pgsbarDownload" Height="20"  Minimum="0" Maximum="100" Margin="0,0,0,100"
+            <ProgressBar Name="pgsbarDownload" Height="20"  Minimum="0" Maximum="100"
                          Value="{Binding DownloadProgress}"/>
+
+            <StackPanel Orientation="Vertical" Margin="0,20,0,80" HorizontalAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Current " Foreground="White"/>
+                    <TextBlock Text="{Binding DownloadedBytes}" Foreground="White"/>
+                    <TextBlock Text=" / " Foreground="White"/>
+                    <TextBlock Text="Total " Foreground="White"/>
+                    <TextBlock Text="{Binding TotalBytes}" Foreground="White"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Speed " Foreground="White"/>
+                    <TextBlock Text="{Binding DownloadSpeed}" Foreground="White"/>
+                </StackPanel>
+            </StackPanel>
             
             <TextBlock Text="Installing..." FontSize="36" HorizontalAlignment="Center" 
            Foreground="White" FontFamily="Courier New"/>

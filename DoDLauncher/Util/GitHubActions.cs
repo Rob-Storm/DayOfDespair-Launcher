@@ -65,7 +65,10 @@ namespace DoDLauncher.Util
             }
         }
 
-        public static async Task<string> DownloadRelease(string owner, string repo, string release, string destinationFolder, IProgress<double> downloadProgress, IProgress<double> extractProgress)
+        //boy this is a hefty method parameter list
+        public static async Task<string> DownloadRelease(string owner, string repo, string release, string destinationFolder,
+            IProgress<(double percentage, long downloadedBytes, long totalBytes, double downloadSpeed)> downloadProgress, 
+            IProgress<double> extractProgress)
         {
             string url = $"https://api.github.com/repos/{owner}/{repo}/releases/tags/{release}";
 
@@ -91,25 +94,39 @@ namespace DoDLauncher.Util
 
                     string filePath = $@"Instances\{destinationFolder}\{assetName}";
 
+                    var buffer = new byte[8192];
+                    long downloadedBytes = 0;
+                    long totalBytes = urlResponse.Content.Headers.ContentLength ?? 0;
+
                     await using (FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.None))
                     {
-                        //await urlResponse.Content.CopyToAsync(fs);
-
                         var contentStream = await urlResponse.Content.ReadAsStreamAsync();
 
-                        var buffer = new byte[8192];
-                        long totalRead = 0;
-                        long totalLength = urlResponse.Content.Headers.ContentLength ?? 0;
+                        DateTime lastTime = DateTime.Now;
+                        long lastBytes = 0;
 
                         int read;
 
                         while((read = await contentStream.ReadAsync(buffer, 0, buffer.Length)) > 0)
                         {
-                            totalRead += read;
-
-                            downloadProgress.Report((double)totalRead / totalLength * 100);
-
+                            downloadedBytes += read;
                             await fs.WriteAsync(buffer, 0, read);
+
+                            DateTime now = DateTime.Now;
+                            double secondsElapsed = (now - lastTime).TotalSeconds;
+
+                            if(secondsElapsed >= 0.5)
+                            {
+                                long bytesSinceLast = downloadedBytes - lastBytes;
+                                double downloadSpeed = bytesSinceLast / secondsElapsed;
+
+                                double percentage = (double)downloadedBytes / totalBytes * 100;
+
+                                downloadProgress.Report((percentage, downloadedBytes, totalBytes, downloadSpeed));
+
+                                lastTime = now;
+                                lastBytes = downloadedBytes;
+                            }
                         }
                     };
 
@@ -126,7 +143,6 @@ namespace DoDLauncher.Util
         private static async Task<string> ExtractFolderRelease(string filePath, string assetName, IProgress<double> extractProgress)
         {
             string fileDirectory = Path.GetDirectoryName(filePath);
-            //ZipFile.ExtractToDirectory(filePath, fileDirectory);
 
             using (ZipArchive archive = ZipFile.OpenRead(filePath))
             {
