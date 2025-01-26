@@ -1,0 +1,43 @@
+﻿<Window x:Class="DoDLauncher.View.CreateInstanceWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DoDLauncher.View"
+        mc:Ignorable="d"
+        Title="Create Instance" Height="360" Width="640"
+        Background="#FF2D2D30" ResizeMode="NoResize">
+    <Grid>
+
+
+        <StackPanel Orientation="Vertical" MaxWidth="600" MaxHeight="460">
+            <TextBlock Text="{Binding WindowLabel}" FontSize="36" Foreground="White" 
+                   VerticalAlignment="Top" HorizontalAlignment="Center"
+                   FontFamily="Courier New"/>
+
+            
+            <TextBlock Text="Instance Name" VerticalAlignment="Center" 
+                       FontFamily="Courier New" FontSize="24" Foreground="White"/>
+            <TextBox Width="Auto" HorizontalAlignment="Stretch" 
+                     HorizontalContentAlignment="Stretch" Text="{Binding InstanceName, Mode=TwoWay, 
+                UpdateSourceTrigger=PropertyChanged}"/>
+
+            
+            <TextBlock Text="Version" VerticalAlignment="Center" 
+                       FontFamily="Courier New" FontSize="24" Foreground="White"/>
+            <ComboBox ItemsSource="{Binding Releases}" SelectedItem="{Binding Version}">
+            </ComboBox>
+
+            
+            <TextBlock Text="Arguments (separate with new line)" VerticalAlignment="Center" 
+                    FontFamily="Courier New" FontSize="24" Foreground="White"/>
+            <ScrollViewer Height="100" VerticalScrollBarVisibility="Auto" 
+                          HorizontalScrollBarVisibility="Auto">
+                <TextBox AcceptsReturn="True" TextWrapping="NoWrap"
+                         Text="{Binding Arguments}"/>
+            </ScrollViewer>
+            <Button Content="Create!" Command="{Binding CreateInstanceCommand}" Margin="0,25,0,0"
+                    FontFamily="Courier New"/>
+        </StackPanel>
+    </Grid>
+</Window>

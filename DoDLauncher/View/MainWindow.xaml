@@ -1,0 +1,104 @@
+﻿<Window x:Class="DoDLauncher.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DoDLauncher"
+        mc:Ignorable="d"
+        Title="Day Of Despair Launcher" Width="960" Height="540"
+        WindowStartupLocation="CenterScreen" WindowState="Maximized" Background="#FF2D2D30"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="350"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Background="#FF2D2D30" BorderThickness="1"/>
+
+        <Grid Grid.Column="0" Margin="10">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Instances Section-->
+            <TextBlock Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"
+                Text="Instances" FontSize="24" Foreground="White" FontFamily="Courier New"/>
+
+            <ListBox Grid.Row="1" Background="#FF2D2D30" ItemsSource="{Binding GameInstances}"
+                     SelectedItem="{Binding SelectedInstance}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Name}" FontSize="16" Foreground="White"
+                           FontFamily="Courier New"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Create Instance" Command="{Binding CreateInstanceCommand}"/>
+                        <MenuItem Header="Remove Instance" Command="{Binding RemoveInstanceCommand}"/>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick">
+                        <i:InvokeCommandAction Command="{Binding StartInstanceCommand}"/>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ListBox>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="75"/>
+                <RowDefinition Height="45"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="75"/>
+            </Grid.RowDefinitions>
+
+            <Border Grid.Row="0" Background="black" BorderThickness="1"/>
+
+            <Image Source="../Resources/Images/logobanner.png" Stretch="UniformToFill" Margin="1"
+                   RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+
+
+            <TextBlock Text="Day Of Despair Launcher" FontSize="48" Foreground="White" 
+                       VerticalAlignment="Center" HorizontalAlignment="Center"
+                       FontFamily="Courier New"/>
+
+
+            <!-- News/Patch notes Section-->
+
+            <TextBlock Grid.Row="1" Text="News" Foreground="White" FontSize="36"
+                       FontFamily="Courier New" HorizontalAlignment="Center" 
+                       VerticalAlignment="Top"/>
+
+
+            <Image Grid.Row="2" Source="../Resources/Images/DayOfDespair.png"
+                   Stretch="UniformToFill" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+
+            <Border Grid.Row="2" Background="Black" Opacity="0.35"/>
+
+            <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Visible" 
+                          VerticalAlignment="Stretch">
+
+                <TextBlock Text="{Binding ReleaseNotes}" FontSize="16" Foreground="White"
+                           FontFamily="Courier New" TextWrapping="Wrap"/>
+            </ScrollViewer>
+
+
+            <Border Grid.Row="3" Background="#FF2D2D30" BorderThickness="1"/>
+
+            <StackPanel Grid.Row="3" Background="#FF2D2D30" Orientation="Horizontal"
+                HorizontalAlignment="Center">
+
+                <Button Content="Play Day of Despair!" FontFamily="Courier New" FontSize="20"
+                        HorizontalContentAlignment="Center" HorizontalAlignment="Center"
+                        Command="{Binding StartInstanceCommand}"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>
