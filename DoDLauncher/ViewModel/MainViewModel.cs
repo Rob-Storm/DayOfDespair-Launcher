@@ -14,6 +14,8 @@ namespace DoDLauncher.ViewModel
     {
         public MainViewModel()
         {
+            CheckForUpdates();
+
             _gameInstances = new ObservableCollection<GameInstance>();
 
             GetLatestReleaseNotes();
@@ -130,17 +132,45 @@ namespace DoDLauncher.ViewModel
         }
         private void RemoveInstance()
         {
-            GameInstance instance = SelectedInstance;
-            SelectedInstance = null;
+            MessageBoxResult removeResult = MessageBox.Show($"Are you sure you want to remove the current instance?\nThis will delete the instance folder and uninstall your game!\n\nSelected Instance: '{SelectedInstance.Name}'",
+                "Remove Instance Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
-            GameInstances.Remove(instance);
+            if(removeResult == MessageBoxResult.Yes)
+            {
+                GameInstance instance = SelectedInstance;
+                SelectedInstance = null;
 
-            Directory.Delete($@"Instances/{instance.Name}", true);
+                GameInstances.Remove(instance);
+
+                Directory.Delete($@"Instances/{instance.Name}", true);
+            }
         }
 
         #endregion
 
         #region Misc Methods
+
+        public async void CheckForUpdates()
+        {
+
+            Util.Version currentVerison = Util.Version.FromString(File.ReadAllText("Version.ini"));
+
+            Util.Version latestVersion = Util.Version.FromString(await GitHubActions.GetLatestLauncherVersion("Rob-Storm", "DayOfDespair-Launcher"));
+
+            if (latestVersion > currentVerison)
+            {
+                MessageBoxResult updateConfirm = 
+                    MessageBox.Show($"There is a new version of the launcher available would you like to download it?\n\nLatest Version: {latestVersion}\nInstalled Version: {currentVerison}",
+                    "New Launcher Version", MessageBoxButton.YesNo, MessageBoxImage.Information);
+
+                if (updateConfirm == MessageBoxResult.Yes)
+                {
+                    string downloadUrl = await GitHubActions.GetLatestLauncherDownloadUrl("Rob-Storm", "DayofDespair-Launcher");
+
+                    Process.Start(new ProcessStartInfo() { FileName = downloadUrl, UseShellExecute = true});
+                }
+            }
+        }
 
         public void ShowInstanceWindow(bool editing)
         {
@@ -172,7 +202,7 @@ namespace DoDLauncher.ViewModel
                 Directory.CreateDirectory(@$"Instances\{GameInstances.LastOrDefault().Name}");
         }
 
-        public async Task GetLatestReleaseNotes()
+        public async void GetLatestReleaseNotes()
         {
             ReleaseNotes = "Fecthing latest release notes...";
 

@@ -172,5 +172,55 @@ namespace DoDLauncher.Util
 
             return exeFiles[0];
         }
+
+        public static async Task<string> GetLatestLauncherVersion(string owner, string repo)
+        {
+            string url = $"https://api.github.com/repos/{owner}/{repo}/releases/latest";
+
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("User-Agent", "DoD-Launcher");
+
+                try
+                {
+                    var response = await client.GetStringAsync(url);
+
+                    JObject release = JObject.Parse(response);
+
+                    return release["tag_name"]?.ToString() ?? "0.0.0";
+                }
+                catch (Exception ex)
+                {
+                    return $"Error fecthing latest launcher version: {ex.Message}";
+                }
+            }
+        }
+
+        public static async Task<string> GetLatestLauncherDownloadUrl(string owner, string repo)
+        {
+            string url = $"https://api.github.com/repos/{owner}/{repo}/releases/latest";
+
+            using (var client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("User-Agent", "DoD-Launcher");
+
+                try
+                {
+                    var response = await client.GetStringAsync(url);
+
+                    JObject release = JObject.Parse(response);
+                    JObject firstAsset = (JObject)release["assets"][0];
+
+                    string downloadUrl = firstAsset["browser_download_url"]?.ToString();
+
+
+                    return downloadUrl ?? "about:blank";
+                }
+                catch (Exception ex)
+                {
+                    return $"Error fecthing latest launcher url: {ex.Message}";
+                }
+            }
+        }
     }
 }
