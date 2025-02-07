@@ -67,7 +67,7 @@ namespace DoDLauncher.Util
 
         //boy this is a hefty method parameter list
         public static async Task<string> DownloadRelease(string owner, string repo, string release, string destinationFolder,
-            IProgress<(double percentage, long downloadedBytes, long totalBytes, double downloadSpeed)> downloadProgress, 
+            IProgress<double> downloadProgress, 
             IProgress<double> extractProgress)
         {
             string url = $"https://api.github.com/repos/{owner}/{repo}/releases/tags/{release}";
@@ -115,14 +115,14 @@ namespace DoDLauncher.Util
                             DateTime now = DateTime.Now;
                             double secondsElapsed = (now - lastTime).TotalSeconds;
 
-                            if(secondsElapsed >= 0.5)
+                            if(secondsElapsed >= 0.1)
                             {
                                 long bytesSinceLast = downloadedBytes - lastBytes;
                                 double downloadSpeed = bytesSinceLast / secondsElapsed;
 
                                 double percentage = (double)downloadedBytes / totalBytes * 100;
 
-                                downloadProgress.Report((percentage, downloadedBytes, totalBytes, downloadSpeed));
+                                downloadProgress.Report(percentage);
 
                                 lastTime = now;
                                 lastBytes = downloadedBytes;

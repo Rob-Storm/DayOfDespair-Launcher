@@ -14,31 +14,6 @@ namespace DoDLauncher.ViewModel
 			get { return _downloadProgress; }
 			set { _downloadProgress = value; OnPropertyChanged(); }
 		}
-
-		private long _downloadedBytes;
-
-		public long DownloadedBytes
-		{
-			get { return _downloadedBytes; }
-			set { _downloadedBytes = value; }
-		}
-
-		private long _totalBytes;
-
-		public long TotalBytes
-		{
-			get { return _totalBytes; }
-			set { _totalBytes = value; }
-		}
-
-		private double _downloadSpeed;
-
-		public double DownloadSpeed
-		{
-			get { return _downloadSpeed; }
-			set { _downloadSpeed = value; }
-		}
-
 		private double _extractProgress;
 
 		public double ExtractProgress
@@ -56,12 +31,9 @@ namespace DoDLauncher.ViewModel
 
 		public async Task StartDownload()
 		{
-            var downloadProgress = new Progress<(double percentage, long downloadedBytes, long totalBytes, double downloadSpeed)>(progress =>
+            var downloadProgress = new Progress<double>(progress =>
             {
-                DownloadProgress = progress.percentage;
-                DownloadedBytes = progress.downloadedBytes;
-                TotalBytes = progress.totalBytes;
-                DownloadSpeed = progress.downloadSpeed / 1024 / 1024; // Convert to MB/s
+                DownloadProgress = progress;
             });
 
             var extractProgress = new Progress<double>(progress =>
@@ -77,6 +49,8 @@ namespace DoDLauncher.ViewModel
                 downloadProgress,
                 extractProgress
             );
+
+			OnFinishInstall?.Invoke();
         }
 
 	}
