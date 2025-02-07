@@ -40,7 +40,7 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="xcopy &quot;$(ProjectDir)Version.ini&quot; &quot;$(TargetDir)&quot;" />
+    <Exec Command="copy &quot;$(ProjectDir)Version.ini&quot; &quot;$(TargetDir)&quot;" />
   </Target>
 
 </Project>
