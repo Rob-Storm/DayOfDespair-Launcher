@@ -5,7 +5,7 @@
 ## 📥 Installation  
 
 ### **With Launcher**  
-1. Download the launcher: [DayOfDespair Launcher v1.0.1](https://github.com/Rob-Storm/DayOfDespair-Launcher/releases/download/1.0.1/DayOfDespair-Launcher.zip)  
+1. Download the launcher: [DayOfDespair Launcher Latest](https://github.com/Rob-Storm/DayOfDespair-Launcher/releases/latest/)  
 2. Extract the contents to your desired location.  
 3. Run `DoDLauncher.exe`.  
 4. Click **Create New Instance**, name it, choose a version, and add any optional arguments (*see below*).  
