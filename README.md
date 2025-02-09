@@ -17,4 +17,4 @@
 - [Unreal Engine Command-Line Arguments Reference](https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-command-line-arguments-reference)
 
 ## ❓ Troubleshooting
-- **Issues?** Report bugs in the [GitHub Issues]([https://github.com/Rob-Storm/DayOfDespair-Public/issues](https://github.com/Rob-Storm/DayOfDespair-Launcher/issues)) section.
+- **Issues?** Report bugs in the [Github Issues](https://github.com/Rob-Storm/DayOfDespair-Launcher/issues) section.
