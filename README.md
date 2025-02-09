@@ -12,28 +12,6 @@
 5. Select the created instance and click **Play**.  
    - If the game is not installed, the launcher will download and extract it automatically before running.  
 
-### **Without Launcher**  
-1. Select a version from the [Releases Page](https://github.com/Rob-Storm/DayOfDespair-Public/releases).  
-2. Download `DayOfDespair.zip`.  
-3. Extract the contents to your desired location.  
-4. Run `DayOfDespair.exe`.  
-
-## ⌨️ Controls  
-
-### **Player Actions**  
-- **WASD** - Move  
-- **Mouse** - Look  
-- **Left Click** - Use equipped item  
-- **Right Click (tap)** - Perform first interaction on object  
-- **Right Click (hold & release)** - Open Action Menu  
-- **Tab** - Toggle Inventory  
-- **Escape** - Pause Game  
-
-### **Inventory**  
-- **Left Click (hold & drag)** - Move an item (e.g. from the ground to your inventory)  
-- **Right Click** - Equip item  
-- **Tab / Escape** - Exit Inventory  
-
 ## ⚙️ Launcher Optional Arguments  
 *(Optional arguments should be separated by new lines in the launcher.)*  
 - [Unreal Engine Command-Line Arguments Reference](https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-command-line-arguments-reference)
