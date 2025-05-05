@@ -7,9 +7,9 @@
 To modify this project, you can use one of the following methods:
 1. Clone with Git
 2. Download Zip
-3. Open with Visual Studio 2022
+3. Open with Visual Studio
 
-** Make sure you have .NET Framework 4 or later installed to compile the program **
+**Make sure you have .NET Framework 4 or later installed to compile the program**
 
 ## 📥 Installation  
 
