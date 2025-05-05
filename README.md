@@ -1,4 +1,4 @@
-# Day of Despair - Launcher Repository  
+# Day of Despair - Launcher
 
 **Day of Despair Launcher** is a utility for easily downloading and managing installs for Day of Despair
 
