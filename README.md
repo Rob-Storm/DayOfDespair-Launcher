@@ -2,7 +2,7 @@
 
 **Day of Despair Launcher** is a utility for easily downloading and managing installs for Day of Despair
 
-## 👩‍💻 Modifying
+## Modifying
 
 To modify this project, you can use one of the following methods:
 1. Clone with Git
@@ -11,7 +11,7 @@ To modify this project, you can use one of the following methods:
 
 **Make sure you have .NET Framework 4 or later installed to compile the program**
 
-## 📥 Installation  
+## Installation  
 
 ### **With Launcher**  
 1. Download the launcher: [DayOfDespair Launcher Latest](https://github.com/Rob-Storm/DayOfDespair-Launcher/releases/latest/)  
@@ -21,9 +21,9 @@ To modify this project, you can use one of the following methods:
 5. Select the created instance and click **Play**.  
    - If the game is not installed, the launcher will download and extract it automatically before running.  
 
-## ⚙️ Launcher Optional Arguments  
+## Launcher Optional Arguments  
 *(Optional arguments should be separated by new lines in the launcher.)*  
 - [Unreal Engine Command-Line Arguments Reference](https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-command-line-arguments-reference)
 
-## ❓ Troubleshooting
+## Troubleshooting
 - **Issues?** Report bugs in the [Github Issues](https://github.com/Rob-Storm/DayOfDespair-Launcher/issues) section.
